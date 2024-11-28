@@ -4,11 +4,9 @@
       <form>
         <input class="min-w-96 border rounded-lg p-2" type="search" value="Search Posts" />
       </form>
-      <NuxtLink
-        to="/create"
-        class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
+      <button @click="onClickNewPost" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
         Create new Post
-      </NuxtLink>
+      </button>
     </div>
     <form>
       <ul>
@@ -39,12 +37,22 @@
       </ul>
     </form>
   </main>
+
+  <Teleport to="#teleports">
+    <ModalWrapper v-if="modalName">
+      <CreatePost></CreatePost>
+    </ModalWrapper>
+  </Teleport>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 const response = await fetch('https://jsonplaceholder.typicode.com/posts');
 const posts = await response.json();
+const modalName = ref(null);
 
-
-function onClickNewPost() {}
+function onClickNewPost() {
+  modalName.value = 'CreatePost';
+}
 </script>
