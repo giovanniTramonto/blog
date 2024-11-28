@@ -1,8 +1,6 @@
 <template>
   <div class="h-full md:grid md:grid-cols-12">
-    <NuxtLayout>
-      <NuxtPage/>
-    </NuxtLayout>
+    <NuxtPage/>
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <Form @submit="onSubmit" :validation-schema="postSchema">
     <header class="p-6 bg-black">
-      <h1 class="text-xl text-white">New Post</h1>
+      <h1 class="text-xl text-white">Update Post</h1>
     </header>
     <div class="p-6">
       <Field v-slot="{ field }" v-model="post.author" type="text" name="author">
@@ -31,25 +31,38 @@
       </ErrorMessage>
     </div>
     <div class="p-6">
-      <input class="rounded-lg bg-darkgreen text-white hover:bg-black p-4" type="submit" value="Create" />
+      <input
+        class="rounded-lg bg-darkgreen text-white disabled:bg-darkgreen/40 hover:bg-black p-4"
+        type="submit"
+        value="Update"
+        :disabled="!post.id" />
     </div>
   </Form>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, inject } from 'vue';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { postSchema } from '~/utils/validation';
 
-const post = reactive({
-  title: null,
-  description: null,
-  author: null
-});
+const { currentModal } = inject('modal');
+const { postId } = currentModal.value.data ?? {}
+const post = reactive({});
+const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`);
+
+if (response.ok) {
+  const { id, title, body: description, userId: author } = await response.json()
+  Object.assign(post, {
+    id,
+    title,
+    author,
+    description
+  })
+}
 
 async function onSubmit() {
-  await fetch('https://jsonplaceholder.typicode.com/posts', {
-    method: 'POST',
+  await fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+    method: 'PUT',
     body: JSON.stringify(post),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
