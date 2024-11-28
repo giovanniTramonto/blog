@@ -1,9 +1,9 @@
 <template>
-  <main class="h-full flex justify-center">
+  <div class="h-full md:grid md:grid-cols-12">
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>
-  </main>
+  </div>
 </template>
 
 <script setup>
