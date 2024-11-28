@@ -1,9 +1,9 @@
 <template>
-  <div class="h-full">
+  <main class="h-full flex justify-center">
     <NuxtLayout>
       <NuxtPage/>
     </NuxtLayout>
-  </div>
+  </main>
 </template>
 
 <script setup>
@@ -13,7 +13,7 @@ useHead({
 
   },
   bodyAttrs: {
-    class: 'bg-green h-full'
+    class: 'h-full'
   }
 })
 </script>
