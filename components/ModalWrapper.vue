@@ -8,23 +8,18 @@
 </template>
 
 <script setup>
+import { useEventListener } from '@vueuse/core';
 import { inject, onMounted, onBeforeUnmount } from 'vue';
 
 const { setCurrentModal } = inject('modal');
 
 onMounted(() => {
-  document.addEventListener('keyup', onKeyUpClose);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keyup', onKeyUpClose);
-});
-
-function onKeyUpClose(event) {
-  if (event.code === 'Escape') {
-    setCurrentModal(null);
-  }
-}
+  useEventListener(document, 'keyup', event => {
+    if (event.code === 'Escape') {
+      setCurrentModal(null);
+    }
+  })
+})
 
 function onClickClose() {
   setCurrentModal(null);
