@@ -2,7 +2,15 @@
   <main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
     <div class="flex justify-between p-6 w-full">
       <form>
-        <input id="search" class="min-w-96 border rounded-lg p-2" type="search" value="Search Posts" />
+        <input
+          v-model="searchTerm"
+          id="search"
+          type="search"
+          class="min-w-96 border rounded-lg p-2"
+          placeholder="Search Posts" />
+        <span class="p-6">
+          {{ posts.length }} Posts
+        </span>
       </form>
       <button @click="setCurrentModal('CreatePost')" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
         Create new Post
@@ -59,13 +67,14 @@
 </template>
 
 <script setup>
-import { provide, ref } from 'vue'
+import { provide, ref, computed, defineModel, watch } from 'vue'
+import { useDebounceFn } from '@vueuse/core';
 import CreatePost from '~/components/CreatePost.vue';
 import EditPost from '~/components/EditPost.vue';
 import DeletePost from '~/components/DeletePost.vue';
 
 const { apiBase } = useRuntimeConfig().public
-const { data: posts } = await useFetch(`${apiBase}/posts`);
+const { data } = await useFetch(`${apiBase}/posts`);
 const { data: users } = await useFetch(`${apiBase}/users`);
 const currentModal = ref(null)
 const modals = {
@@ -73,6 +82,13 @@ const modals = {
   EditPost,
   DeletePost
 }
+const searchTerm = defineModel()
+const searchPost = ref(null);
+const posts = computed(
+  () => searchPost.value
+    ? data.value.filter(item => item.title.indexOf(searchPost.value) > -1)
+    : data.value
+);
 
 function getUserNameById(userId) {
   const user = users.value.find(({ id }) => id === userId)
@@ -89,6 +105,13 @@ function setCurrentModal(name, data = {}) {
     data
   } : null
 }
+
+watch(
+  searchTerm,
+  useDebounceFn(event => {
+    searchPost.value = searchTerm.value;
+  }, 250, { maxWait: 5000 })
+)
 
 provide('modal', {
   modals,

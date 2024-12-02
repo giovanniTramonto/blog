@@ -3,8 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: false },
   modules: [
+    '@vueuse/nuxt',
     '@nuxtjs/tailwindcss',
-    '@vee-validate/nuxt'
+    '@vee-validate/nuxt',
   ],
   runtimeConfig: {
     public: {
