@@ -26,7 +26,7 @@
           {{ post.title }}
         </div>
         <div class="flex-1">Lorem Ispum</div>
-        <div class="flex-1">Author {{ post.userId }}</div>
+        <div class="flex-1">{{ getUserNameById(post.userId) }}</div>
         <div class="grow-0 basis-20">
           <ul>
             <li>
@@ -64,12 +64,19 @@ import CreatePost from '~/components/CreatePost.vue';
 import EditPost from '~/components/EditPost.vue';
 import DeletePost from '~/components/DeletePost.vue';
 
-const { data: posts } = await useFetch(`${useRuntimeConfig().public.apiBase}/posts`);
+const { apiBase } = useRuntimeConfig().public
+const { data: posts } = await useFetch(`${apiBase}/posts`);
+const { data: users } = await useFetch(`${apiBase}/users`);
 const currentModal = ref(null)
 const modals = {
   CreatePost,
   EditPost,
   DeletePost
+}
+
+function getUserNameById(userId) {
+  const user = users.value.find(({ id }) => id === userId)
+  return user ? user.name : null
 }
 
 function setCurrentModal(name, data = {}) {

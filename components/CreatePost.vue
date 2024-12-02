@@ -4,13 +4,14 @@
       <h1 class="text-xl text-white">New Post</h1>
     </header>
     <div class="p-6">
-      <Field v-slot="{ field }" v-model="post.author" type="text" name="author">
-        <label for="title" class="block py-2">Author</label>
-        <input v-bind="field" class="border border-green w-full p-2" type="text" name="author" />
+      <label for="author" class="block py-2">Author</label>
+      <Field id="author" class="border border-green w-full p-2" name="author" v-model="post.author" as="select">
+        <option value="">Select Author …</option>
+        <option v-for="user in users" :value="user.id">{{ user.name }}</option>
       </Field>
-      <ErrorMessage name="author" v-slot="{ message }">
+      <!--<ErrorMessage name="author" v-slot="{ message }">
         <div class="bg-green text-white p-2">{{ message }}</div>
-      </ErrorMessage>
+      </ErrorMessage>-->
     </div>
     <div class="p-6">
       <Field v-slot="{ field }" v-model="post.title" type="text" name="title">
@@ -24,7 +25,7 @@
     <div class="p-6">
       <Field v-slot="{ field }" v-model="post.description" name="description">
         <label for="textarea" class="block py-2">Description</label>
-        <textarea id="textarea" name="description" class="border border-green w-full p-2" rows="4" v-bind="field" ></textarea>
+        <textarea id="textarea" name="description" class="border border-green w-full p-2" rows="4" v-bind="field"></textarea>
       </Field>
       <ErrorMessage name="description" v-slot="{ message }">
         <div class="bg-green text-white p-2">{{ message }}</div>
@@ -41,6 +42,8 @@ import { reactive } from 'vue';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { postSchema } from '~/utils/validation';
 
+const { apiBase } = useRuntimeConfig().public
+const { data: users } = await useFetch(`${apiBase}/users`);
 const post = reactive({
   title: null,
   description: null,
@@ -48,7 +51,7 @@ const post = reactive({
 });
 
 async function onSubmit() {
-  await $fetch(`${useRuntimeConfig().public.apiBase}/posts`, {
+  await $fetch(`${apiBase}/posts`, {
     method: 'POST',
     body: JSON.stringify(post),
     headers: {

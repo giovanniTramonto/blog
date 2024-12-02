@@ -4,13 +4,13 @@
       <h1 class="text-xl text-white">Update Post</h1>
     </header>
     <div class="p-6">
-      <Field v-slot="{ field }" v-model="post.author" type="text" name="author">
-        <label for="author" class="block py-2">Author</label>
-        <input id="author" v-bind="field" class="border border-green w-full p-2" type="text" name="author" />
+      <Field id="author" class="border border-green w-full p-2" v-slot="{ value }" v-model="post.userId" name="author" as="select">
+        <option value="">Select Author …</option>
+        <option v-for="user in users" :value="user.id" :selected="value && value === user.id">{{ user.name }}</option>
       </Field>
-      <ErrorMessage name="author" v-slot="{ message }">
+      <!--<ErrorMessage name="author" v-slot="{ message }">
         <div class="bg-green text-white p-2">{{ message }}</div>
-      </ErrorMessage>
+      </ErrorMessage>-->
     </div>
     <div class="p-6">
       <Field v-slot="{ field }" v-model="post.title" type="text" name="title">
@@ -50,13 +50,14 @@ const { postId } = currentModal.value.data ?? {}
 const post = reactive({});
 const { apiBase } = useRuntimeConfig().public
 const response = await useFetch(`${apiBase}/posts/${postId}`);
+const { data: users } = await useFetch(`${apiBase}/users`);
 
 if (response.status.value === 'success') {
-  const { id, title, body: description, userId: author } = response.data.value
+  const { id, title, body: description, userId } = response.data.value
   Object.assign(post, {
     id,
     title,
-    author,
+    userId,
     description
   })
 }
