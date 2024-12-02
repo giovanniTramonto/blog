@@ -1,12 +1,12 @@
 <template>
-  <form @submit.prevent="onSubmit">
+  <form v-if="post" @submit.prevent="onSubmit">
     <h1 class="text-xl text-white p-6 bg-black">Delete Post</h1>
     <div class="p-6">
       <input
         type="text"
         readonly 
         class="bg-green text-white p-2"
-        :value="postTitle" />
+        :value="post.title" />
     </div>
     <button
       type="submit"
@@ -17,19 +17,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-
-const { currentModal, setCurrentModal } = inject('modal');
 const { apiBase } = useRuntimeConfig().public;
-const route = useRoute();
-const { delete: postId } = route.query;
+const { currentModal, showModal, unsetModal } = inject('modal');
+const { id: postId } = currentModal.value.data;
 const { data: post } = await useFetch(`${apiBase}/posts/${postId}`);
-const postTitle = ref(post?.title);
+
+showModal();
 
 async function onSubmit() {
   await $fetch(`${apiBase}/posts/${postId}`, {
     method: 'DELETE'
   });
-  setCurrentModal(null);
+  unsetModal();
 }
 </script>

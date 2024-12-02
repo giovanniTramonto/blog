@@ -43,14 +43,14 @@
           <ul>
             <li>
                 <button
-                  @click="onClickEditPost(post.id)"
+                  @click.stop="onClickEditPost(post.id)"
                   class="text-sm underline underline-offset-2 text-darkgreen">
                   Edit
                 </button>
             </li>
             <li>
                 <button
-                  @click="onClickDeletePost(post.id)"
+                  @click.stop="onClickDeletePost(post.id)"
                   class="text-sm underline underline-offset-2 text-darkgreen">
                   Delete
                 </button>
@@ -62,11 +62,12 @@
   </main>
 
   <Teleport to="#teleports">
-    <Transition>
-      <ModalWrapper v-if="currentModal">
-        <component :is="modals[currentModal]"></component>
-      </ModalWrapper>
-    </Transition>
+    <ModalWrapper
+      v-if="currentModal?.name"
+      class="transition-opacity duration-300"
+      :style="wrapperStyles">
+      <component :is="modals[currentModal.name]"></component>
+    </ModalWrapper>
   </Teleport>
 </template>
 
@@ -83,10 +84,11 @@ const { apiBase } = useRuntimeConfig().public
 const { data } = await useFetch(`${apiBase}/posts`);
 const { data: users } = await useFetch(`${apiBase}/users`);
 const currentModal = ref(null);
+const isModalVisible = ref(false);
 const modals = {
-  CreatePost,
-  EditPost,
-  DeletePost
+  create: CreatePost,
+  edit: EditPost,
+  delete: DeletePost
 }
 const searchTerm = defineModel();
 const searchPost = ref(null);
@@ -95,11 +97,9 @@ const posts = computed(
     ? data.value.filter(item => item.title.indexOf(searchPost.value) > -1)
     : data.value
 );
-const queries = {
-  create: 'CreatePost',
-  edit: 'EditPost',
-  delete: 'DeletePost'
-};
+const wrapperStyles = computed(() => ({
+  opacity: isModalVisible.value ? 1 : 0
+}));
 
 function getUserNameById(userId) {
   const user = users.value.find(({ id }) => id === userId)
@@ -110,21 +110,36 @@ function getShortDescription(text) {
   return `${text.substr(0, 50)} …`;
 }
 
-function setCurrentModal(name = null, query = undefined) {
-  router.replace({ query });
-  currentModal.value = name;
+function setCurrentModal(name, data = {}) {
+  currentModal.value = {
+    name,
+    data
+  };
+}
+
+function showModal() {
+  isModalVisible.value = true;
+}
+
+function unsetModal() {
+  currentModal.value = null;
+  isModalVisible.value = false;
+  router.replace({ query: null });
 }
 
 function onClickCreatePost() {
-  setCurrentModal('CreatePost', { 'create': null });
+  setCurrentModal('create');
+  router.replace({ query: { action: 'create' } });
 }
 
 function onClickEditPost(postId) {
-  setCurrentModal('EditPost', { 'edit': postId });
+  setCurrentModal('edit', { id: postId });
+  router.replace({ query: { id: postId, action: 'edit' } });
 }
 
 function onClickDeletePost(postId) {
-  setCurrentModal('DeletePost', { 'delete': postId });
+  setCurrentModal('delete', { id: postId });
+  router.replace({ query: { id: postId, action: 'delete' } });
 }
 
 function onClickPost(postId) {
@@ -139,29 +154,17 @@ watch(
 )
 
 provide('modal', {
-  modals,
+  isModalVisible,
   currentModal,
-  setCurrentModal
+  setCurrentModal,
+  showModal,
+  unsetModal
 })
 
 onMounted(() => {
-  for (const [param, value] of Object.entries(route.query)) {
-    if (queries[param]) {
-      setCurrentModal(queries[param], { [param]: Number(value) });
-      break;
-    }
+  const { action, id } = route.query;
+  if (action) {
+    setCurrentModal(action, { id });
   }
 })
 </script>
-
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>

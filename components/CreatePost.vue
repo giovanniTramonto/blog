@@ -55,9 +55,11 @@ import { postSchema } from '~/utils/validation';
 import { isObjectEmpty } from '~/utils/object';
 import { inject } from 'vue';
 
-const { setCurrentModal } = inject('modal');
+const { showModal, unsetModal } = inject('modal');
 const { apiBase } = useRuntimeConfig().public;
 const { data: users } = await useFetch(`${apiBase}/users`);
+
+showModal();
 
 async function onSubmit(values) {
   await $fetch(`${apiBase}/posts`, {
@@ -71,6 +73,6 @@ async function onSubmit(values) {
       'Content-type': 'application/json; charset=UTF-8',
     },
   });
-  setCurrentModal(null);
+  unsetModal();
 }
 </script>

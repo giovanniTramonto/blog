@@ -1,5 +1,5 @@
 <template>
-  <Form v-slot="{ errors }" :validation-schema="postSchema" @submit="onSubmit">
+  <Form v-if="post" v-slot="{ errors }" :validation-schema="postSchema" @submit="onSubmit">
     <h1 class="text-xl text-white p-6 bg-black">Edit Post</h1>
     <div class="p-6">
       <label for="author" class="block py-2">Author</label>
@@ -37,7 +37,7 @@
       </ErrorMessage>
     </div>
     <div class="p-6">
-      <Field v-slot="{ field }" v-model="post.description" name="description">
+      <Field v-model="post.body" v-slot="{ field }" name="description">
         <label for="textarea" class="block py-2">Description</label>
         <textarea
         v-bind="field"
@@ -54,35 +54,25 @@
     <button
       class="rounded-lg bg-darkgreen text-white disabled:bg-darkgreen/40 hover:bg-black p-4 m-6"
       type="submit"
-      :disabled="!post.id || !isObjectEmpty(errors)">
+      :disabled="!isObjectEmpty(errors)">
       Update
     </button>
   </Form>
 </template>
 
 <script setup>
-import { reactive, inject } from 'vue';
+import { inject } from 'vue';
 import { Field, Form, ErrorMessage } from 'vee-validate';
 import { postSchema } from '~/utils/validation';
 import { isObjectEmpty } from '~/utils/object';
 
-const { currentModal, setCurrentModal } = inject('modal');
-const post = reactive({});
+const { currentModal, showModal, unsetModal } = inject('modal');
+const { id: postId } = currentModal.value.data;
 const { apiBase } = useRuntimeConfig().public;
 const { data: users } = await useFetch(`${apiBase}/users`);
-const route = useRoute();
-const { edit: postId } = route.query;
-const response = await useFetch(`${apiBase}/posts/${postId}`);
+const { data: post } = await useFetch(`${apiBase}/posts/${postId}`);
 
-if (response.status.value === 'success') {
-  const { id, title, body: description, userId } = response.data.value;
-  Object.assign(post, {
-    id,
-    title,
-    userId,
-    description
-  });
-}
+showModal();
 
 async function onSubmit(values) {
   await $fetch(`${apiBase}/posts/${postId}`, {
@@ -97,6 +87,6 @@ async function onSubmit(values) {
       'Content-type': 'application/json; charset=UTF-8',
     },
   });
-  setCurrentModal(null);
+  unsetModal();
 }
 </script>
