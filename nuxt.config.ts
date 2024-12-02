@@ -6,4 +6,12 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vee-validate/nuxt'
   ],
+  runtimeConfig: {
+    public: {
+      apiBase: 'https://jsonplaceholder.typicode.com',
+    }
+  }
 })
+
+
+

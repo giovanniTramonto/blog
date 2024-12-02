@@ -15,16 +15,16 @@
     <div class="p-6">
       <Field v-slot="{ field }" v-model="post.title" type="text" name="title">
         <label for="title" class="block py-2">Title</label>
-        <input v-bind="field" class="border border-green w-full p-2" type="text" name="title" />
+        <input id="title" class="border border-green w-full p-2" type="text" name="title" v-bind="field" />
       </Field>
       <ErrorMessage name="title" v-slot="{ message }">
         <div class="bg-green text-white p-2">{{ message }}</div>
       </ErrorMessage>
     </div>
     <div class="p-6">
-      <Field v-slot="{ field, errors }" v-model="post.description" name="description">
+      <Field v-slot="{ field }" v-model="post.description" name="description">
         <label for="textarea" class="block py-2">Description</label>
-        <textarea v-bind="field" id="textarea" name="description" class="border border-green w-full p-2" rows="4"></textarea>
+        <textarea id="textarea" name="description" class="border border-green w-full p-2" rows="4" v-bind="field" ></textarea>
       </Field>
       <ErrorMessage name="description" v-slot="{ message }">
         <div class="bg-green text-white p-2">{{ message }}</div>
@@ -48,7 +48,7 @@ const post = reactive({
 });
 
 async function onSubmit() {
-  await fetch('https://jsonplaceholder.typicode.com/posts', {
+  await $fetch(`${useRuntimeConfig().public.apiBase}/posts`, {
     method: 'POST',
     body: JSON.stringify(post),
     headers: {

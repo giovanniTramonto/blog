@@ -2,7 +2,7 @@
   <main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
     <div class="flex justify-between p-6 w-full">
       <form>
-        <input class="min-w-96 border rounded-lg p-2" type="search" value="Search Posts" />
+        <input id="search" class="min-w-96 border rounded-lg p-2" type="search" value="Search Posts" />
       </form>
       <button @click="setCurrentModal('CreatePost')" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
         Create new Post
@@ -64,8 +64,7 @@ import CreatePost from '~/components/CreatePost.vue';
 import EditPost from '~/components/EditPost.vue';
 import DeletePost from '~/components/DeletePost.vue';
 
-const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-const posts = await response.json();
+const { data: posts } = await useFetch(`${useRuntimeConfig().public.apiBase}/posts`);
 const currentModal = ref(null)
 const modals = {
   CreatePost,
