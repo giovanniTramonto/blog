@@ -12,7 +12,7 @@
           {{ posts.length }} Posts
         </span>
       </form>
-      <button @click="setCurrentModal('CreatePost')" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
+      <button @click="onClickCreatePost" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
         Create new Post
       </button>
     </div>
@@ -39,14 +39,14 @@
           <ul>
             <li>
                 <button
-                  @click="setCurrentModal('EditPost', { postId: post.id })"
+                  @click="onClickEditPost(post.id)"
                   class="text-sm underline underline-offset-2 text-darkgreen">
                   Edit
                 </button>
             </li>
             <li>
                 <button
-                  @click="setCurrentModal('DeletePost', { postId: post.id })"
+                  @click="onClickDeletePost(post.id)"
                   class="text-sm underline underline-offset-2 text-darkgreen">
                   Delete
                 </button>
@@ -60,23 +60,25 @@
   <Teleport to="#teleports">
     <Transition>
       <ModalWrapper v-if="currentModal">
-        <component :is="modals[currentModal.name]"></component>
+        <component :is="modals[currentModal]"></component>
       </ModalWrapper>
     </Transition>
   </Teleport>
 </template>
 
 <script setup>
-import { provide, ref, computed, defineModel, watch } from 'vue'
+import { provide, ref, computed, watch, onMounted } from 'vue'
 import { useDebounceFn } from '@vueuse/core';
 import CreatePost from '~/components/CreatePost.vue';
 import EditPost from '~/components/EditPost.vue';
 import DeletePost from '~/components/DeletePost.vue';
 
+const router = useRouter();
+const route = useRoute();
 const { apiBase } = useRuntimeConfig().public
 const { data } = await useFetch(`${apiBase}/posts`);
 const { data: users } = await useFetch(`${apiBase}/users`);
-const currentModal = ref(null)
+const currentModal = ref(null);
 const modals = {
   CreatePost,
   EditPost,
@@ -89,6 +91,11 @@ const posts = computed(
     ? data.value.filter(item => item.title.indexOf(searchPost.value) > -1)
     : data.value
 );
+const queries = {
+  create: 'CreatePost',
+  edit: 'EditPost',
+  delete: 'DeletePost'
+}
 
 function getUserNameById(userId) {
   const user = users.value.find(({ id }) => id === userId)
@@ -99,11 +106,21 @@ function getShortDescription(text) {
   return `${text.substr(0, 50)} …`;
 }
 
-function setCurrentModal(name, data = {}) {
-  currentModal.value = name ? {
-    name,
-    data
-  } : null
+function setCurrentModal(name = null, query = undefined) {
+  router.replace({ query });
+  currentModal.value = name;
+}
+
+function onClickCreatePost() {
+  setCurrentModal('CreatePost', { 'create': null });
+}
+
+function onClickEditPost(postId) {
+  setCurrentModal('EditPost', { 'edit': postId });
+}
+
+function onClickDeletePost(postId) {
+  setCurrentModal('DeletePost', { 'delete': postId });
 }
 
 watch(
@@ -117,6 +134,15 @@ provide('modal', {
   modals,
   currentModal,
   setCurrentModal
+})
+
+onMounted(() => {
+  for (const [param, value] of Object.entries(route.query)) {
+    if (queries[param]) {
+      setCurrentModal(queries[param], { [param]: Number(value) });
+      break;
+    }
+  }
 })
 </script>
 

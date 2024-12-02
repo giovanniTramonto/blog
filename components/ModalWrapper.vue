@@ -3,7 +3,7 @@
     <div class="bg-white border-5 border-green p-8">
       <slot></slot>
     </div>
-    <button @click="onClickClose" class="absolute top-8 right-8 text-white">X</button>
+    <button @click="setCurrentModal(null)" class="absolute top-8 right-8 text-white">X</button>
   </div>
 </template>
 
@@ -20,9 +20,4 @@ onMounted(() => {
     }
   })
 })
-
-function onClickClose() {
-  setCurrentModal(null);
-}
-
 </script>

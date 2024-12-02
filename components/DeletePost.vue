@@ -6,7 +6,7 @@
         type="text"
         readonly 
         class="bg-green text-white p-2"
-        :value="post.title" />
+        :value="postTitle" />
     </div>
     <button
       type="submit"
@@ -17,10 +17,14 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 const { currentModal, setCurrentModal } = inject('modal');
-const { postId } = currentModal.value.data ?? {};
 const { apiBase } = useRuntimeConfig().public;
+const route = useRoute();
+const { delete: postId } = route.query;
 const { data: post } = await useFetch(`${apiBase}/posts/${postId}`);
+const postTitle = ref(post?.title);
 
 async function onSubmit() {
   await $fetch(`${apiBase}/posts/${postId}`, {

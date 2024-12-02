@@ -67,10 +67,11 @@ import { postSchema } from '~/utils/validation';
 import { isObjectEmpty } from '~/utils/object';
 
 const { currentModal, setCurrentModal } = inject('modal');
-const { postId } = currentModal.value.data ?? {};
 const post = reactive({});
 const { apiBase } = useRuntimeConfig().public;
 const { data: users } = await useFetch(`${apiBase}/users`);
+const route = useRoute();
+const { edit: postId } = route.query;
 const response = await useFetch(`${apiBase}/posts/${postId}`);
 
 if (response.status.value === 'success') {
