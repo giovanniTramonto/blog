@@ -1,7 +1,6 @@
 export const postSchema = {
   author(value) {
-    const { length } = value ?? {};
-    return length > 0 && length < 250;
+    return !!value && typeof value === "number";
   },
   title(value) {
     const { length } = value ?? {};
