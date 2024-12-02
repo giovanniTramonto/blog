@@ -29,7 +29,11 @@
         </div>
         <div class="grow-0 basis-20"></div>
       </li>
-      <li v-for="post in posts" :key="post.id" class="flex gap-6 p-6 border-b border-green hover:bg-green">
+      <li
+        v-for="post in posts"
+        :key="post.id"
+        class="flex gap-6 p-6 border-b border-green hover:bg-green"
+        @click="onClickPost(post.id)">
         <div class="flex-1">
           {{ post.title }}
         </div>
@@ -84,7 +88,7 @@ const modals = {
   EditPost,
   DeletePost
 }
-const searchTerm = defineModel()
+const searchTerm = defineModel();
 const searchPost = ref(null);
 const posts = computed(
   () => searchPost.value
@@ -95,7 +99,7 @@ const queries = {
   create: 'CreatePost',
   edit: 'EditPost',
   delete: 'DeletePost'
-}
+};
 
 function getUserNameById(userId) {
   const user = users.value.find(({ id }) => id === userId)
@@ -121,6 +125,10 @@ function onClickEditPost(postId) {
 
 function onClickDeletePost(postId) {
   setCurrentModal('DeletePost', { 'delete': postId });
+}
+
+function onClickPost(postId) {
+  router.push({ path: `/posts/${postId}` });
 }
 
 watch(
