@@ -25,7 +25,7 @@
         <div class="flex-1">
           {{ post.title }}
         </div>
-        <div class="flex-1">Lorem Ispum</div>
+        <div class="flex-1">{{ getShortDescription(post.body) }}</div>
         <div class="flex-1">{{ getUserNameById(post.userId) }}</div>
         <div class="grow-0 basis-20">
           <ul>
@@ -77,6 +77,10 @@ const modals = {
 function getUserNameById(userId) {
   const user = users.value.find(({ id }) => id === userId)
   return user ? user.name : null
+}
+
+function getShortDescription(text) {
+  return `${text.substr(0, 50)} …`;
 }
 
 function setCurrentModal(name, data = {}) {
