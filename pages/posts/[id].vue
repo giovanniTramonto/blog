@@ -16,19 +16,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 
-const post = ref(null);
-const user = ref(null);
 const route = useRoute();
-const { apiBase } = useRuntimeConfig().public;
+const { apiFetch } = useApi();
 const { id } = route.params
+const { data: post } = await apiFetch(`posts/${id}`);
+const { data: user } = await apiFetch(`users/${post.value?.userId}`);
 const showPost = computed(() => post.value && user.value);
-
-if (id) {
-  const { data: postData } = await useAsyncData('post', () => $fetch(`${apiBase}/posts/${id}`));
-  post.value = postData.value;
-  const { data: userData } = await useAsyncData('user', () => $fetch(`${apiBase}/users/${post.value.userId}`));
-  user.value = userData.value
-}
 </script>

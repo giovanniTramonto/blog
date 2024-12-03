@@ -56,22 +56,16 @@ import { isObjectEmpty } from '~/utils/object';
 import { inject } from 'vue';
 
 const { showModal, unsetModal } = inject('modal');
-const { apiBase } = useRuntimeConfig().public;
-const { data: users } = await useFetch(`${apiBase}/users`);
+const { apiPost, apiFetch } = useApi();
+const { data: users } = await apiFetch('users');
 
 showModal();
 
 async function onSubmit(values) {
-  await $fetch(`${apiBase}/posts`, {
-    method: 'POST',
-    body: JSON.stringify({
-      userId: values.author,
-      title: values.title,
-      body: values.description
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
+  await apiPost('posts', {
+    userId: values.author,
+    title: values.title,
+    body: values.description
   });
   unsetModal();
 }

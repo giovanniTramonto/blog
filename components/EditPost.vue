@@ -68,24 +68,18 @@ import { isObjectEmpty } from '~/utils/object';
 
 const { currentModal, showModal, unsetModal } = inject('modal');
 const { id: postId } = currentModal.value.data;
-const { apiBase } = useRuntimeConfig().public;
-const { data: users } = await useFetch(`${apiBase}/users`);
-const { data: post } = await useFetch(`${apiBase}/posts/${postId}`);
+const { apiPut, apiFetch } = useApi();
+const { data: users } = await apiFetch('users');
+const { data: post } = await apiFetch(`posts/${postId}`);
 
 showModal();
 
 async function onSubmit(values) {
-  await $fetch(`${apiBase}/posts/${postId}`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      id: postId,
-      userId: values.author,
-      title: values.title,
-      body: values.description
-    }),
-    headers: {
-      'Content-type': 'application/json; charset=UTF-8',
-    },
+  await apiPut(`posts/${postId}`, {
+    id: postId,
+    userId: values.author,
+    title: values.title,
+    body: values.description
   });
   unsetModal();
 }

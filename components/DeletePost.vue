@@ -18,16 +18,15 @@
 
 <script setup>
 const { apiBase } = useRuntimeConfig().public;
+const { apiDelete, apiFetch } = useApi();
 const { currentModal, showModal, unsetModal } = inject('modal');
 const { id: postId } = currentModal.value.data;
-const { data: post } = await useFetch(`${apiBase}/posts/${postId}`);
+const { data: post } = await apiFetch(`posts/${postId}`);
 
 showModal();
 
 async function onSubmit() {
-  await $fetch(`${apiBase}/posts/${postId}`, {
-    method: 'DELETE'
-  });
+  await apiDelete(`posts/${postId}`);
   unsetModal();
 }
 </script>

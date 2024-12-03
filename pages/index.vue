@@ -82,9 +82,9 @@ import DeletePost from '~/components/DeletePost.vue';
 
 const router = useRouter();
 const route = useRoute();
-const { apiBase } = useRuntimeConfig().public
-const { data } = await useFetch(`${apiBase}/posts`);
-const { data: users } = await useFetch(`${apiBase}/users`);
+const { apiFetch } = useApi()
+const { data } = await apiFetch('posts');
+const { data: users } = await apiFetch('users');
 const currentModal = ref(null);
 const isModalVisible = ref(false);
 const modals = {
