@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   modules: [
     '@vueuse/nuxt',
+    '@nuxt/test-utils/module',
     '@nuxtjs/tailwindcss',
     '@vee-validate/nuxt',
   ],
