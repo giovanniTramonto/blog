@@ -63,7 +63,7 @@
     </ul>
   </main>
 
-  <Teleport to="#teleports">
+  <Teleport to="body">
     <ModalWrapper
       v-if="currentModal?.name"
       class="transition-opacity duration-300"
