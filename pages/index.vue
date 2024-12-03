@@ -1,18 +1,20 @@
 <template>
   <main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
-    <div class="flex justify-between p-6 w-full">
-      <form>
+    <div class="flex gap-4 justify-between p-6 w-full">
+      <form class="flex-1">
         <input
           v-model="searchTerm"
           id="search"
           type="search"
-          class="min-w-96 border rounded-lg p-2"
+          class="md:min-w-96 border rounded-lg p-2"
           placeholder="Search Posts" />
-        <span class="p-6">
+        <span class="p-2 max-[768px]:hidden">
           {{ posts.length }} Posts
         </span>
       </form>
-      <button @click="onClickCreatePost" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">
+      <button
+        class="bg-darkgreen hover:bg-black text-white rounded-lg p-2"
+        @click="onClickCreatePost">
         Create new Post
       </button>
     </div>
