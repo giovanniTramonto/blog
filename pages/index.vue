@@ -76,8 +76,6 @@
 </template>
 
 <script setup>
-import { provide, ref, computed, watch, onMounted } from 'vue'
-import { useDebounceFn } from '@vueuse/core';
 import CreatePost from '~/components/CreatePost.vue';
 import EditPost from '~/components/EditPost.vue';
 import DeletePost from '~/components/DeletePost.vue';
@@ -152,7 +150,7 @@ function onClickPost(postId) {
 
 watch(
   searchTerm,
-  useDebounceFn(event => {
+  useDebounceFn(() => {
     searchPost.value = searchTerm.value;
   }, 250, { maxWait: 5000 })
 )

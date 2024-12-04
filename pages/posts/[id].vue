@@ -18,7 +18,7 @@
 <script setup>
 const route = useRoute();
 const { apiFetch } = useApi();
-const { id } = route.params
+const { id } = route.params;
 const { data: post } = await apiFetch(`posts/${id}`);
 const { data: user } = await apiFetch(`users/${post.value?.userId}`);
 const showPost = computed(() => post.value && user.value);

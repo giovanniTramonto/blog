@@ -14,9 +14,6 @@
 </template>
 
 <script setup>
-import { useEventListener } from '@vueuse/core';
-import { inject, onMounted, onBeforeUnmount } from 'vue';
-
 const { unsetModal } = inject('modal');
 
 onMounted(() => {

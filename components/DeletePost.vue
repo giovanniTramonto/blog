@@ -13,7 +13,6 @@
 </template>
 
 <script setup>
-const { apiBase } = useRuntimeConfig().public;
 const { apiDelete, apiFetch } = useApi();
 const { currentModal, showModal, unsetModal } = inject('modal');
 const { id: postId } = currentModal.value.data;

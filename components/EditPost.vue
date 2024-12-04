@@ -61,11 +61,6 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
-import { Field, Form, ErrorMessage } from 'vee-validate';
-import { postSchema } from '~/utils/validation';
-import { isObjectEmpty } from '~/utils/object';
-
 const { currentModal, showModal, unsetModal } = inject('modal');
 const { id: postId } = currentModal.value.data;
 const { apiPut, apiFetch } = useApi();

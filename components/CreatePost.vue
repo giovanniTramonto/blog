@@ -50,11 +50,6 @@
 </template>
 
 <script setup>
-import { Field, Form, ErrorMessage } from 'vee-validate';
-import { postSchema } from '~/utils/validation';
-import { isObjectEmpty } from '~/utils/object';
-import { inject } from 'vue';
-
 const { showModal, unsetModal } = inject('modal');
 const { apiPost, apiFetch } = useApi();
 const { data: users } = await apiFetch('users');
