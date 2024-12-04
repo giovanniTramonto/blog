@@ -1,16 +1,12 @@
 <template>
   <form v-if="post" @submit.prevent="onSubmit">
-    <h1 class="text-xl text-white p-6 bg-black">Delete Post</h1>
+    <h1 class="text-xl p-6 bg-green">Delete Post</h1>
     <div class="p-6">
-      <input
-        type="text"
-        readonly 
-        class="bg-green text-white p-2"
-        :value="post.title" />
+      {{ post.title }}
     </div>
     <button
       type="submit"
-      class="rounded-lg bg-darkgreen text-white disabled:bg-darkgreen/40 hover:bg-black p-4 m-6">
+      class="rounded-lg bg-darkgreen hover:bg-black text-white disabled:bg-darkgreen/40 p-4 m-6">
       Delete
     </button>
   </Form>

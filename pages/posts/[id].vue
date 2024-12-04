@@ -1,7 +1,7 @@
 <template>
   <main v-if="showPost" class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
     <header>
-      <h1 class="text-xl text-white p-6 bg-black">{{ post.title }}</h1>
+      <h1 class="text-xl p-6 bg-green">{{ post.title }}</h1>
       <span class="block p-6 text-green">{{ user.name }}</span>
     </header>
     <section class="p-6">
@@ -10,7 +10,7 @@
       </p>
     </section>
     <footer class="p-6">
-      <NuxtLink to="/" class="bg-green hover:bg-black hover:text-white p-2">Overview</NuxtLink>
+      <NuxtLink to="/" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">Overview</NuxtLink>
     </footer>
   </main>
 </template>

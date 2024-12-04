@@ -1,6 +1,6 @@
 <template>
   <Form v-if="post" v-slot="{ errors }" :validation-schema="postSchema" @submit="onSubmit">
-    <h1 class="text-xl text-white p-6 bg-black">Edit Post</h1>
+    <h1 class="text-xl p-6 bg-green">Edit Post</h1>
     <div class="p-6">
       <label for="author" class="block py-2">Author</label>
       <Field
@@ -52,7 +52,7 @@
       </ErrorMessage>
     </div>
     <button
-      class="rounded-lg bg-darkgreen text-white disabled:bg-darkgreen/40 hover:bg-black p-4 m-6"
+      class="rounded-lg bg-darkgreen hover:bg-black text-white disabled:bg-darkgreen/40 p-4 m-6"
       type="submit"
       :disabled="!isObjectEmpty(errors)">
       Update

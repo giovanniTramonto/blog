@@ -1,13 +1,15 @@
 <template>
-  <div class="fixed z-10 bg-black/80 inset-0 p-16">
-    <div class="bg-white border-5 border-green p-8">
-      <slot></slot>
+  <div class="fixed z-10 bg-black/85 inset-0 md:grid md:grid-cols-12 items-center" @click="unsetModal()">
+    <div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 m-16" @click.stop>
+      <div class="bg-white rounded overflow-hidden">
+        <slot></slot>
+      </div>
+      <button
+        class="absolute top-4 right-6 text-white text-5xl hover:text-green"
+        @click="unsetModal()">
+        ×
+      </button>
     </div>
-    <button
-      class="absolute top-4 right-6 text-white text-5xl hover:text-green"
-      @click="unsetModal()">
-      ×
-    </button>
   </div>
 </template>
 
