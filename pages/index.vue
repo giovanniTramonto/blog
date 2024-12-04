@@ -9,7 +9,7 @@
           class="md:min-w-96 border rounded-lg p-2"
           placeholder="Search Posts" />
         <span class="p-2 max-[768px]:hidden">
-          {{ posts.length }} Posts
+          {{ filteredPosts.length }} Posts
         </span>
       </form>
       <button
@@ -32,7 +32,7 @@
         <div class="grow-0 basis-20"></div>
       </li>
       <li
-        v-for="post in posts"
+        v-for="post in filteredPosts"
         :key="post.id"
         class="flex gap-6 p-6 border-b border-green hover:bg-green"
         @click="onClickPost(post.id)">
@@ -83,7 +83,7 @@ import DeletePost from '~/components/DeletePost.vue';
 const router = useRouter();
 const route = useRoute();
 const { apiFetch } = useApi()
-const { data } = await apiFetch('posts');
+const { data: posts } = await apiFetch('posts');
 const { data: users } = await apiFetch('users');
 const currentModal = ref(null);
 const isModalVisible = ref(false);
@@ -94,10 +94,10 @@ const modals = {
 }
 const searchTerm = defineModel();
 const searchPost = ref(null);
-const posts = computed(
+const filteredPosts = computed(
   () => searchPost.value
-    ? data.value.filter(item => item.title.indexOf(searchPost.value) > -1)
-    : data.value
+    ? posts.value.filter(item => item.title.indexOf(searchPost.value) > -1)
+    : posts.value ?? []
 );
 const wrapperStyles = computed(() => ({
   opacity: isModalVisible.value ? 1 : 0
