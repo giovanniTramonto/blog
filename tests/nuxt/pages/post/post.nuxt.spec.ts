@@ -34,12 +34,12 @@ describe('Post', () => {
     expect(component.html()).toMatchInlineSnapshot(`
       "<main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
         <header>
-          <h1 class="text-xl text-white p-6 bg-black">My new post</h1><span class="block p-6 text-green">Sensei Vu</span>
+          <h1 class="text-xl p-6 bg-green">My new post</h1><span class="block p-6 text-green">Sensei Vu</span>
         </header>
         <section class="p-6">
           <p>Lorem Ipsum</p>
         </section>
-        <footer class="p-6"><a href="/" class="bg-green hover:bg-black hover:text-white p-2">Overview</a></footer>
+        <footer class="p-6"><a href="/" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">Overview</a></footer>
       </main>"
     `);
   })
