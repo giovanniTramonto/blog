@@ -34,7 +34,7 @@ describe('Post', () => {
     expect(component.html()).toMatchInlineSnapshot(`
       "<div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
         <header>
-          <h1 class="text-xl p-6 bg-green">My new post</h1><span class="block p-6 text-green">Sensei Vu</span>
+          <h1 class="text-xl p-6 bg-green">My new post</h1><span class="block p-6 text-darkgreen">Sensei Vu</span>
         </header>
         <main class="p-6">
           <section>

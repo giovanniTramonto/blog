@@ -2,7 +2,7 @@
   <div v-if="showPost" class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
     <header>
       <h1 class="text-xl p-6 bg-green">{{ post.title }}</h1>
-      <span class="block p-6 text-green">{{ user.name }}</span>
+      <span class="block p-6 text-darkgreen">{{ user.name }}</span>
     </header>
     <main class="p-6">
       <section>

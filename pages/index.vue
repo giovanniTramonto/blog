@@ -6,7 +6,7 @@
           v-model="searchTerm"
           id="search"
           type="search"
-          class="md:min-w-96 border border-green rounded-lg p-2"
+          class="md:min-w-96 border border-darkgreen rounded-lg p-2"
           placeholder="Search Posts" />
         <span class="p-2 max-[768px]:hidden">
           {{ filteredPosts.length }} Posts
@@ -48,14 +48,14 @@
                 <li>
                     <button
                       @click.stop="onClickEditPost(post.id)"
-                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
+                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black p-1">
                       Edit
                     </button>
                 </li>
                 <li>
                     <button
                       @click.stop="onClickDeletePost(post.id)"
-                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
+                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black p-1">
                       Delete
                     </button>
                 </li>
