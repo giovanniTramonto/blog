@@ -32,15 +32,17 @@ describe('Post', () => {
   it('equals snapshot', async () => {
     const component = await mountSuspended(Post, { route: `/posts/${postId}` });
     expect(component.html()).toMatchInlineSnapshot(`
-      "<main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
+      "<div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
         <header>
           <h1 class="text-xl p-6 bg-green">My new post</h1><span class="block p-6 text-green">Sensei Vu</span>
         </header>
-        <section class="p-6">
-          <p>Lorem Ipsum</p>
-        </section>
+        <main class="p-6">
+          <section>
+            <p>Lorem Ipsum</p>
+          </section>
+        </main>
         <footer class="p-6"><a href="/" class="bg-darkgreen hover:bg-black text-white rounded-lg p-2">Overview</a></footer>
-      </main>"
+      </div>"
     `);
   })
 })

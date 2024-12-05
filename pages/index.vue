@@ -1,6 +1,6 @@
 <template>
-  <main class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 min-h-full">
-    <nav class="flex gap-4 justify-between p-6 w-full">
+  <div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11">
+    <nav class="flex gap-4 justify-between p-6">
       <form class="flex-1">
         <input
           v-model="searchTerm"
@@ -18,52 +18,54 @@
         Create new Post
       </button>
     </nav>
-    <section>
-      <ul>
-        <li class="flex gap-6 bg-green p-6">
-          <div class="flex-1">
-            Title
-          </div>
-          <div class="flex-1 max-[768px]:hidden">
-            Description
-          </div>
-          <div class="flex-1 max-[768px]:hidden">
-            Author
-          </div>
-          <div class="grow-0 basis-20"></div>
-        </li>
-        <li
-          v-for="post in filteredPosts"
-          :key="post.id"
-          class="flex gap-6 p-6 border-b border-green hover:bg-green/10 cursor-pointer"
-          @click="onClickPost(post.id)">
-          <div class="flex-1">
-            {{ post.title }}
-          </div>
-          <div class="flex-1 max-[768px]:hidden">{{ getShortDescription(post.body) }}</div>
-          <div class="flex-1 max-[768px]:hidden">{{ getUserNameById(post.userId) }}</div>
-          <div class="grow-0 basis-20">
-            <ul>
-              <li>
-                  <button
-                    @click.stop="onClickEditPost(post.id)"
-                    class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
-                    Edit
-                  </button>
-              </li>
-              <li>
-                  <button
-                    @click.stop="onClickDeletePost(post.id)"
-                    class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
-                    Delete
-                  </button>
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </section>
-  </main>
+    <main>
+      <section>
+        <ul>
+          <li class="flex gap-6 bg-green p-6">
+            <div class="flex-1">
+              Title
+            </div>
+            <div class="flex-1 max-[768px]:hidden">
+              Description
+            </div>
+            <div class="flex-1 max-[768px]:hidden">
+              Author
+            </div>
+            <div class="grow-0 basis-20"></div>
+          </li>
+          <li
+            v-for="post in filteredPosts"
+            :key="post.id"
+            class="flex gap-6 p-6 border-b border-green hover:bg-green/10 cursor-pointer"
+            @click="onClickPost(post.id)">
+            <div class="flex-1">
+              {{ post.title }}
+            </div>
+            <div class="flex-1 max-[768px]:hidden">{{ getShortDescription(post.body) }}</div>
+            <div class="flex-1 max-[768px]:hidden">{{ getUserNameById(post.userId) }}</div>
+            <div class="grow-0 basis-20">
+              <ul>
+                <li>
+                    <button
+                      @click.stop="onClickEditPost(post.id)"
+                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
+                      Edit
+                    </button>
+                </li>
+                <li>
+                    <button
+                      @click.stop="onClickDeletePost(post.id)"
+                      class="text-sm underline underline-offset-2 text-darkgreen hover:text-black">
+                      Delete
+                    </button>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
+  </div>
 
   <Teleport to="body">
     <ModalWrapper

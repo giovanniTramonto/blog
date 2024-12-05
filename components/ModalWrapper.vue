@@ -1,6 +1,6 @@
 <template>
   <div class="fixed z-10 bg-black/85 inset-0 md:grid md:grid-cols-12 items-center" @click="unsetModal()">
-    <div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 m-16" @click.stop>
+    <div class="md:col-start-2 lg:col-start-3 md:col-end-12 lg:col-end-11 my-20 mx-6 md:mx-0" @click.stop>
       <div class="bg-white rounded overflow-hidden">
         <slot></slot>
       </div>
